@@ -6,4 +6,6 @@ package: main
 
 import:
     - package: github.com/Sirupsen/logrus
-    - package: github.com/coreos/go-systemd/journal
+    - package: github.com/coreos/go-systemd
+      ref: d08b1d0cf9e96bf287b33d3a2c55132e185b273b
+      vcs: git
