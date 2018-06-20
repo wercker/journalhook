@@ -9,7 +9,9 @@ import (
 	logrus "github.com/sirupsen/logrus"
 )
 
-type JournalHook struct{}
+type JournalHook struct {
+	LogrusLevels []logrus.Level
+}
 
 var (
 	severityMap = map[logrus.Level]journal.Priority{
@@ -64,14 +66,18 @@ func (hook *JournalHook) Fire(entry *logrus.Entry) error {
 
 // `Levels()` returns a slice of `Levels` the hook is fired for.
 func (hook *JournalHook) Levels() []logrus.Level {
-	return []logrus.Level{
-		logrus.PanicLevel,
-		logrus.FatalLevel,
-		logrus.ErrorLevel,
-		logrus.WarnLevel,
-		logrus.InfoLevel,
-		logrus.DebugLevel,
+	if len(hook.LogrusLevels) == 0 {
+		return []logrus.Level{
+			logrus.PanicLevel,
+			logrus.FatalLevel,
+			logrus.ErrorLevel,
+			logrus.WarnLevel,
+			logrus.InfoLevel,
+			logrus.DebugLevel,
+		}
 	}
+
+	return hook.LogrusLevels
 }
 
 // Adds the Journal hook if journal is enabled
